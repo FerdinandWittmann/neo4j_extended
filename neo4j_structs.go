@@ -17,22 +17,22 @@ func NewNeoRequest() NeoRequest {
 
 //NeoField name value parameter tuple
 type NeoField struct {
-	name string
-	val  interface{}
+	Name string
+	Val  interface{}
 }
 
 //NeoNode name label variable tuple
 type NeoNode struct {
-	name     string
-	label    string
-	fields   []NeoField
-	relation *NeoRelation
+	Name     string
+	Label    string
+	Fields   []NeoField
+	Relation *NeoRelation
 }
 
 //NeoRelation relation
 type NeoRelation struct {
-	name   string
-	label  string
-	fields []NeoField
-	node   *NeoNode
+	Name   string
+	Label  string
+	Fields []NeoField
+	Node   *NeoNode
 }
