@@ -7,29 +7,29 @@ func getFieldsCypher(r *NeoRequest, fields []NeoField) (out string, err error) {
 	out = "{"
 	for _, field := range fields {
 		//Default supported types
-		switch val := field.val.(type) {
+		switch val := field.Val.(type) {
 		case int:
-			field.val = val
+			field.Val = val
 			if val != 0 {
-				out += field.name + ": $" + field.name + ", "
+				out += field.Name + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		case string:
-			field.val = val
+			field.Val = val
 			if val != "" {
-				out += field.name + ": $" + field.name + ", "
+				out += field.Name + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		case float64:
-			field.val = val
+			field.Val = val
 			if val != 0 {
-				out += field.name + ": $" + field.name + ", "
+				out += field.Name + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		case []string:
-			field.val = val
+			field.Val = val
 			if len(val) > 0 {
-				out += field.name + ": $" + field.name + ", "
+				out += field.Name + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		default:
@@ -59,7 +59,7 @@ func (n *NeoRequest) addCypherAll(multicypher []string) {
 
 //addParam adds a prameter
 func (n *NeoRequest) addParam(param NeoField) {
-	n.params[param.name] = param.val
+	n.params[param.Name] = param.Val
 }
 
 //addParamAll adds multiple params
