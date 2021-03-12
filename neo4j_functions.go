@@ -28,4 +28,5 @@ func (r *NeoRequest) AddReturn(nodes *[]NeoNode) (err error) {
 	}
 	cypher = trailingComma(cypher)
 	r.multiCypher = append(r.multiCypher, cypher)
+	return nil
 }
