@@ -87,6 +87,7 @@ func (req *NeoRequest) NewNeoNode(name string, label string, fields []NeoField) 
 		Fields:  &fields,
 		NextRel: nil,
 	}
+	req.names[node.Name] = struct{}{}
 	return node, nil
 }
 
@@ -102,6 +103,7 @@ func (node *NeoNode) AddRelation(name string, label string, fields []NeoField, d
 		Direction: direction,
 		NextNode:  nil,
 	}
+	req.names[node.NextRel.Name] = struct{}{}
 	return node.NextRel, nil
 }
 
@@ -116,5 +118,6 @@ func (rel *NeoRelation) AddNode(name string, label string, fields []NeoField, re
 		Fields:  &fields,
 		NextRel: nil,
 	}
+	req.names[rel.NextNode.Name] = struct{}{}
 	return rel.NextNode, nil
 }
