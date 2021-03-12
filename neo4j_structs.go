@@ -88,6 +88,7 @@ func (req *NeoRequest) NewNeoNode(name string, label string, fields []NeoField) 
 		NextRel: nil,
 	}
 	req.names[node.Name] = struct{}{}
+
 	return node, nil
 }
 
