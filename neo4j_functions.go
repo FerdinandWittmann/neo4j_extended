@@ -30,3 +30,15 @@ func (r *NeoRequest) AddReturn(nodes *[]NeoNode) (err error) {
 	r.multiCypher = append(r.multiCypher, cypher)
 	return nil
 }
+
+//AddMatch adds a match statement
+func (r *NeoRequest) AddMatch(n NeoNode) (err error) {
+	cypherkey := "Match"
+	cypher, err := n.toCypher(r)
+	if err != nil {
+		return err
+	}
+	cypher = cypherkey + cypher
+	r.multiCypher = append(r.multiCypher, cypher)
+	return nil
+}
