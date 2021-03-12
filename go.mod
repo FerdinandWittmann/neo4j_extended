@@ -1,4 +1,4 @@
-module github.com/FerdinandWittmann/coli_crawler/neo4j_extended
+module github.com/FerdinandWittmann/neo4j_extended
 
 go 1.15
 
