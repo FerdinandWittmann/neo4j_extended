@@ -4,6 +4,9 @@ import "errors"
 
 //addFields adds Fields to cypher string
 func getFieldsCypher(r *NeoRequest, fields []NeoField) (out string, err error) {
+	if len(fields) == 0 {
+		return "", nil
+	}
 	out = "{"
 	for _, field := range fields {
 		//Default supported types

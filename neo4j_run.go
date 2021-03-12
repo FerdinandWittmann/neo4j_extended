@@ -51,6 +51,6 @@ func CreateSession(accessMode neo4j.AccessMode) (session neo4j.Session, err erro
 }
 
 //SetDriver sets the driver variable should be locally initialized
-func SetDriver(_driver neo4j.Driver) {
-	NDriver = &_driver
+func SetDriver(_driver *neo4j.Driver) {
+	NDriver = _driver
 }
