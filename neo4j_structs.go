@@ -29,7 +29,7 @@ type NeoField struct {
 type NeoRelation struct {
 	Name      string
 	Label     string
-	Fields    []NeoField
+	Fields    *[]NeoField
 	NextNode  *NeoNode
 	Direction int
 }
@@ -38,7 +38,7 @@ type NeoRelation struct {
 type NeoNode struct {
 	Name    string
 	Label   string
-	Fields  []NeoField
+	Fields  *[]NeoField
 	NextRel *NeoRelation
 }
 
@@ -84,7 +84,7 @@ func (req *NeoRequest) NewNeoNode(name string, label string, fields []NeoField) 
 	node = NeoNode{
 		Name:    name,
 		Label:   label,
-		Fields:  fields,
+		Fields:  &fields,
 		NextRel: nil,
 	}
 	return node, nil
@@ -98,7 +98,7 @@ func (node *NeoNode) AddRelation(name string, label string, fields []NeoField, d
 	node.NextRel = &NeoRelation{
 		Name:      name,
 		Label:     label,
-		Fields:    fields,
+		Fields:    &fields,
 		Direction: direction,
 		NextNode:  nil,
 	}
@@ -113,7 +113,7 @@ func (rel *NeoRelation) AddNode(name string, label string, fields []NeoField, re
 	rel.NextNode = &NeoNode{
 		Name:    name,
 		Label:   label,
-		Fields:  fields,
+		Fields:  &fields,
 		NextRel: nil,
 	}
 	return rel.NextNode, nil
