@@ -62,6 +62,7 @@ func (n *NeoRequest) addCypherAll(multicypher []string) {
 
 //addParam adds a prameter
 func (n *NeoRequest) addParam(param NeoField) {
+	n.names[param.Name] = struct{}{}
 	n.params[param.Name] = param.Val
 }
 
