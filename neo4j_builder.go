@@ -1,6 +1,21 @@
 package neo4j_extended
 
-import "errors"
+import (
+	"errors"
+	"strconv"
+)
+
+//nodeOp any operation that does work with nodes-rel system
+func nodeOp(key string, node *NeoNode, req *NeoRequest) (err error) {
+	cypherkey := key + " "
+	cypher, err := node.toCypher(req)
+	if err != nil {
+		return err
+	}
+	cypher = cypherkey + cypher
+	req.multiCypher = append(req.multiCypher, cypher)
+	return nil
+}
 
 //addFields adds Fields to cypher string
 func getFieldsCypher(r *NeoRequest, fields *[]NeoField) (out string, err error) {
@@ -9,30 +24,39 @@ func getFieldsCypher(r *NeoRequest, fields *[]NeoField) (out string, err error) 
 	}
 	out = "{"
 	for _, field := range *fields {
+		//Check if parameter with same Name already exists
+		fieldName := field.Name
+		_, ok := r.params[field.Name]
+		i := 1
+		for ok {
+			field.Name = field.Name + strconv.Itoa(i)
+			i += 1
+			_, ok = r.params[field.Name]
+		}
 		//Default supported types
 		switch val := field.Val.(type) {
 		case int:
 			field.Val = val
 			if val != 0 {
-				out += field.Name + ": $" + field.Name + ", "
+				out += fieldName + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		case string:
 			field.Val = val
 			if val != "" {
-				out += field.Name + ": $" + field.Name + ", "
+				out += fieldName + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
-		case float64:
+		case float64, float32:
 			field.Val = val
 			if val != 0 {
-				out += field.Name + ": $" + field.Name + ", "
+				out += fieldName + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		case []string:
 			field.Val = val
 			if len(val) > 0 {
-				out += field.Name + ": $" + field.Name + ", "
+				out += fieldName + ": $" + field.Name + ", "
 				r.addParam(field)
 			}
 		default:
@@ -72,10 +96,22 @@ func (n *NeoRequest) addParamAll(params []NeoField) {
 	}
 }
 
+//MultiCypherToCypher takes a cyper reduces it to one
+func MultiCypherToCypher(multiCypher []string) (cypher string) {
+	for _, singleCypher := range multiCypher {
+		cypher = cypher + singleCypher + " "
+	}
+	return cypher
+}
+
 //trailingComma removes ", "
 func trailingComma(s string) string {
-	if s[len(s)-2:] == ", " {
-		s = s[:len(s)-2]
+	//TODO Edge Case > 2 Analyse
+	if len(s) > 2 {
+		if s[len(s)-2:] == ", " {
+			s = s[:len(s)-2]
+		}
+		return s
 	}
 	return s
 
