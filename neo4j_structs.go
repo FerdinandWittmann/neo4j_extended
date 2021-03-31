@@ -59,12 +59,13 @@ func (node *NeoNode) ReuseNode() (reuseNode *NeoNode) {
 
 //toCypher returns the cypher representation of the node-rel LinkedList and adds params to req
 func (node *NeoNode) toCypher(req *NeoRequest) (cypher string, err error) {
+	//Create Cypher Node Statement
 	cypher = "(" + node.Name
 	if node.Label != "" {
 		cypher += ":" + node.Label + " "
 		cypher += " "
 	}
-	if len(node.Fields) > 0 {
+	if (*node).Fields != nil && len(*node.Fields) > 0 {
 		fieldsstring, err := getFieldsCypher(req, node.Fields)
 		if err != nil {
 			return "", err
@@ -85,7 +86,7 @@ func (node *NeoNode) toCypher(req *NeoRequest) (cypher string, err error) {
 			cypher += ":" + rel.Label
 
 		}
-		if len(rel.Fields) > 0 {
+		if (*rel).Fields != nil && len(*rel.Fields) > 0 {
 			fieldsstring, err := getFieldsCypher(req, rel.Fields)
 			if err != nil {
 				return "", err
